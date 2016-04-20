@@ -19,9 +19,48 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
+     */
+    private $allTasks;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
+    }
+
+
+    /**
+     * Add allTasks
+     *
+     * @param \TaskMngBundle\Entity\Task $allTasks
+     * @return User
+     */
+    public function addAllTask(\TaskMngBundle\Entity\Task $allTasks)
+    {
+        $this->allTasks[] = $allTasks;
+
+        return $this;
+    }
+
+    /**
+     * Remove allTasks
+     *
+     * @param \TaskMngBundle\Entity\Task $allTasks
+     */
+    public function removeAllTask(\TaskMngBundle\Entity\Task $allTasks)
+    {
+        $this->allTasks->removeElement($allTasks);
+    }
+
+    /**
+     * Get allTasks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAllTasks()
+    {
+        return $this->allTasks;
     }
 }

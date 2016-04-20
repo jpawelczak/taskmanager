@@ -1,0 +1,7 @@
+task_mng:
+    resource: "@TaskMngBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

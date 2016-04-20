@@ -2,5 +2,8 @@ taskmanager
 ===========
 
 
+To improve:
+- deadline datetime - start from today 
+- creation datetime with server's date, not user's date
 
-A Symfony project created on April 20, 2016, 8:00 am.
+

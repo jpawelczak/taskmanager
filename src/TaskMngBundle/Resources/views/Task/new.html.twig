@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+
+{% block topmenu %}
+    {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <h1>Create your task:</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('task') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

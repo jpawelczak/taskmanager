@@ -6,7 +6,6 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-
 {% block fos_user_content %}
     {% if error %}
         <div class="alert alert-warning" role="alert"> {{ error.messageKey|trans(error.messageData, 'security') }}</div>

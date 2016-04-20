@@ -3,6 +3,7 @@
 namespace TaskMngBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \DateTime;
 
 /**
  * Task
@@ -84,6 +85,15 @@ class Task
     private $allComments;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->createdDate = new DateTime();
+        $this->allComments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -160,19 +170,6 @@ class Task
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set createdDate
-     *
-     * @param \DateTime $createdDate
-     * @return Task
-     */
-    public function setCreatedDate($createdDate)
-    {
-        $this->createdDate = $createdDate;
-
-        return $this;
     }
 
     /**
@@ -275,13 +272,6 @@ class Task
     public function getDeadline()
     {
         return $this->deadline;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->allComments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

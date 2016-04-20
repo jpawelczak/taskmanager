@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+{% block body %}
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                {% block topmenu %}{% endblock %}
+            </nav>
+            <h3 class="text-muted">Welcome 'User' (TODO)!</h3>
+        </div>
+
+        <div id="content">
+        {% block content %}
+        {% endblock %}
+        </div>
+
+        <nav>
+            {% block footermenu %}{% endblock %}
+        </nav>
+
+        <footer class="footer">
+            <p>&copy; Jakub Pawelczak</p>
+        </footer>
+
+    </div>
+    {% block javascripts %}{% endblock %}
+{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</body>
 </html>

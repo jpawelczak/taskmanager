@@ -1,1 +1,23 @@
-Hello {{ name }}!
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+{% endblock %}
+{% block topmenu %}
+    <ul class="nav nav-pills pull-right">
+        <li role="presentation"><a href="/profile">My Profile</a></li>
+        <li role="presentation"><a href="/">My Tasks</a></li>
+        <li role="presentation"><a href="/logout">Log out</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+    <div class="jumbotron">
+        <h1>Task Management service</h1>
+        <p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>
+        <p class="nav nav-pills"><a href="#">Add task</a></p>
+    </div>
+
+    <h3>All your tasks below!</h3>
+{% endblock %}
+

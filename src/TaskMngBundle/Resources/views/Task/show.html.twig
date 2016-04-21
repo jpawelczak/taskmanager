@@ -30,10 +30,10 @@
             </tr>
             {% if entity.markedResolved == false %}
                 <tr>
-                <th>Resolved?</th>
-                <td>Not resolved
-                    <a class="btn btn-xs btn-primary" href="{{ path('task_edit', { 'id': entity.id }) }}">Done</a>
-                </td>
+                    <th>Resolved?</th>
+                    <td>Not resolved
+                        <a class="btn btn-xs btn-primary" href="{{ path('task_resolved', { 'id': entity.id }) }}">Done!</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
@@ -55,19 +55,22 @@
 
     <ul class="nav nav-pills" role="tablist">
         <li role="presentation">
-            <a class="label label-success" href="{{ path('task') }}">
-                Back to the list
-            </a>
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">Back to
+                the list
+            </button>
         </li>
+        {% if entity.markedResolved == false %}
+            <li role="presentation">
+                <button type="button" class="btn btn-sm btn-success"
+                        onclick="location.href='{{ path('task_edit', { 'id': entity.id }) }}'">Edit the task
+                </button>
+            </li>
+        {% else %}
+        {% endif %}
         <li role="presentation">
-            <a class="label label-success" href="{{ path('task_edit', { 'id': entity.id }) }}">
-                Edit the task
-            </a>
-        </li>
-        <li role="presentation">
-            <a class="label label-success" href="{{ path('comment_new', { 'id': entity.id }) }}">
-                Add a comment
-            </a>
+            <button type="button" class="btn btn-sm btn-success"
+                    onclick="location.href='{{ path('comment_new', { 'id': entity.id }) }}'">Add a comment
+            </button>
         </li>
         <li>
             {{ form_errors(delete_form) }}

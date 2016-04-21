@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+    public function findAllTasksOfUser($userId)
+    {
+        $result = $this->getEntityManager()
+            ->createQuery('SELECT t FROM TaskMngBunde:Task t WHERE t.user_id > :userId')
+            ->setParameter('userId', $userId)
+            ->getResult();
+
+        return $result;
+    }
 }

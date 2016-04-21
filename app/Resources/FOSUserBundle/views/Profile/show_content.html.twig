@@ -1,6 +1,25 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
-</div>
+{% block content %}
+
+    <div class="fos_user_user_show">
+        <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+        <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    </div>
+
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success"
+                    onclick="location.href='{{ path('fos_user_profile_edit') }}'">
+                Edit user
+            </button>
+        </li>
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success"
+                    onclick="location.href='{{ path('fos_user_change_password') }}'">
+                Change password
+            </button>
+        </li>
+    </ul>
+<br>
+{% endblock %}

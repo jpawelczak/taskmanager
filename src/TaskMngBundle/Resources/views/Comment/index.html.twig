@@ -1,5 +1,9 @@
 {% extends '::base.html.twig' %}
 
+{% block topmenu %}
+    {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
+{% endblock %}
+
 {% block content %}
     <h3>Comment list</h3>
 

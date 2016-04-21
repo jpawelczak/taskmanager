@@ -3,9 +3,8 @@
     {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
 {% endblock %}
 {% block content %}
-    <h1>Task edit</h1>
+    <h3>Edit task: {{ entity.name }}</h3>
 
-    {% form_theme form 'bootstrap_3_layout.html.twig' %}
     {{ form(edit_form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         <ul class="record_actions">

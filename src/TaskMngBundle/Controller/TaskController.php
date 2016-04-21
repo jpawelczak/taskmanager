@@ -28,9 +28,11 @@ class TaskController extends Controller
      */
     public function indexAction()
     {
+        $user = $this->getUser();
+
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('TaskMngBundle:Task')->findAll();
+        $entities = $em->getRepository('TaskMngBundle:Task')->findBy(array('user' => $user));
 
         return array(
             'entities' => $entities,
@@ -145,6 +147,7 @@ class TaskController extends Controller
 
         $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
 
+        //setting up as markedResolved with 'today' date
         $entity->setMarkedResolved(true);
         $entity->setResolvedDate(new DateTime());
 
@@ -175,8 +178,13 @@ class TaskController extends Controller
 
         $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
 
+        //throwing 404 if try to enter /edit for the resolved Task
+        if($entity->getMarkedResolved() == true){
+            throw $this->createNotFoundException('Unable to find the Task.');
+        }
+
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Task entity.');
+            throw $this->createNotFoundException('Unable to find the Task.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -205,7 +213,7 @@ class TaskController extends Controller
 
         $form->add('submit', 'submit', array(
             'label' => 'Update',
-            'attr' => array('class' => 'btn btn-lg btn-success')));
+            'attr' => array('class' => 'btn btn-sm btn-success')));
 
         return $form;
     }

@@ -12,7 +12,7 @@
             <button type="button" class="btn btn-lg btn-success" onclick="location.href='{{ path('task_new') }}'">Add task</button>
         </div>
 
-        <h3>All your tasks below!</h3>
+        <h3>All your tasks below</h3>
 
         <div>
             <table class="table">
@@ -47,11 +47,14 @@
                         <td>
                             <ul>
                                     <li>
-                                        <a href="{{ path('task_show', { 'id': entity.id }) }}">Show details</a>
+                                        <a href="{{ path('task_show', { 'id': entity.id }) }}">Details & Comments <span class="badge">{{ entity.allComments|length }}</span></a>
                                     </li>
+                                {% if entity.markedResolved == false %}
                                     <li>
                                         <a href="{{ path('task_edit', { 'id': entity.id }) }}">Edit the task</a>
                                     </li>
+                                {% else %}
+                                {% endif %}
                                     <li>
                                         <a href="{{ path('comment_new', { 'id': entity.id }) }}">Add comment</a>
                                     </li>

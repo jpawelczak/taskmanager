@@ -1,15 +1,22 @@
 {% extends '::base.html.twig' %}
 
+{% block topmenu %}
+    {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
+{% endblock %}
+
 {% block content %}
-    <h1>Comment creation</h1>
+    <h3>Add comment to Task: {{ task.name }}</h3>
+
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
     {{ form(form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('comment') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <a class="label label-success" href="{{ path('task_show', { 'id': task.id }) }}">
+                Back to the task
+            </a>
+        </li>
+    </ul>
+    <br>
 {% endblock %}

@@ -1,58 +1,83 @@
 {% extends '::base.html.twig' %}
+
 {% block topmenu %}
     {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
 {% endblock %}
-{% block content %}
-    <h1>Task</h1>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
+{% block content %}
+
+    <h3>Task name: {{ entity.name }}</h3>
+    <div>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Description</th>
                 <td>{{ entity.description }}</td>
             </tr>
             <tr>
-                <th>Createddate</th>
+                <th>Priority</th>
+                {% if entity.priority == 0 %}
+                    <td>Low</td>
+                {% elseif entity.priority == 1 %}
+                    <td>Medium</td>
+                {% elseif entity.priority == 2 %}
+                    <td>High</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th>Created date</th>
                 <td>{{ entity.createdDate|date('Y-m-d H:i:s') }}</td>
             </tr>
-            <tr>
-                <th>Markedresolved</th>
-                <td>{{ entity.markedResolved }}</td>
-            </tr>
-            <tr>
-                <th>Resolveddate</th>
-                <td>{{ entity.resolvedDate|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Priority</th>
-                <td>{{ entity.priority }}</td>
-            </tr>
+            {% if entity.markedResolved == false %}
+                <tr>
+                <th>Resolved?</th>
+                <td>Not resolved
+                    <a class="btn btn-xs btn-primary" href="{{ path('task_edit', { 'id': entity.id }) }}">Done</a>
+                </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Resolved?</th>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <th>Resolved date</th>
+                    <td>{{ entity.resolvedDate|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>Deadline</th>
                 <td>{{ entity.deadline|date('Y-m-d H:i:s') }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('task') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('task_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <a class="label label-success" href="{{ path('task') }}">
+                Back to the list
+            </a>
+        </li>
+        <li role="presentation">
+            <a class="label label-success" href="{{ path('task_edit', { 'id': entity.id }) }}">
+                Edit the task
+            </a>
+        </li>
+        <li role="presentation">
+            <a class="label label-success" href="{{ path('comment_new', { 'id': entity.id }) }}">
+                Add a comment
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+
+    <br>
+
+    <p>List of all comments:</p>
+    {% for comment in entity.allComments %}
+        <p><a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a>,
+            Created: {{ comment.creationDate|date('Y-m-d H:i:s') }}</p>
+    {% endfor %}
+
 {% endblock %}

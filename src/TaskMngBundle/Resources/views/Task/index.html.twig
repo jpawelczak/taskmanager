@@ -1,65 +1,68 @@
 {% extends '::base.html.twig' %}
-{% block stylesheets %}
-    <link href="css/jumbotron-narrow.css" rel="stylesheet">
-{% endblock %}
+
 {% block topmenu %}
     {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
 {% endblock %}
+
 {% block content %}
 
-    <div class="jumbotron">
-        <h1>Task Management service</h1>
-        <p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>
-        <p class="nav nav-pills"><a href="{{ path('task_new') }}">Add task</a></p>
-    </div>
+        <div class="jumbotron">
+            <h1>Task Management service</h1>
+            <p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>
+            <button type="button" class="btn btn-lg btn-success" onclick="location.href='{{ path('task_new') }}'">Add task</button>
+        </div>
 
-    <h3>All your tasks below!</h3>
+        <h3>All your tasks below!</h3>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Createddate</th>
-                <th>Markedresolved</th>
-                <th>Resolveddate</th>
-                <th>Priority</th>
-                <th>Deadline</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.description }}</td>
-                <td>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.markedResolved }}</td>
-                <td>{% if entity.resolvedDate %}{{ entity.resolvedDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.priority }}</td>
-                <td>{% if entity.deadline %}{{ entity.deadline|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('task_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('task_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Created date</th>
+                    <th>Priority</th>
+                    <th>Deadline</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        {% if entity.markedResolved == false %}
+                            <td align="center"><a href="{{ path('task_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span></a></td>
+                        {% else %}
+                            <td align="center"><a href="{{ path('task_show', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></a></td>
+                        {% endif %}
+                        <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                        <td>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        {% if entity.priority == 0 %}
+                            <td>Low</td>
+                        {% elseif entity.priority == 1 %}
+                            <td>Medium</td>
+                        {% elseif entity.priority == 2 %}
+                            <td>High</td>
+                        {% endif %}
+                        <td>{% if entity.deadline %}{{ entity.deadline|date('Y-m-d') }}{% endif %}</td>
+                        <td>
+                            <ul>
+                                    <li>
+                                        <a href="{{ path('task_show', { 'id': entity.id }) }}">Show details</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('task_edit', { 'id': entity.id }) }}">Edit the task</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('comment_new', { 'id': entity.id }) }}">Add comment</a>
+                                    </li>
+                                </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-        <ul>
-        <li>
-            <a href="{{ path('task_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+            <br>
+        </div>
+
+{% endblock %}

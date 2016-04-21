@@ -1,5 +1,17 @@
 {% extends '::base.html.twig' %}
 
+    {% block stylesheets %}
+        <link href="{{ asset('bundles/taskmng/css/signin.css') }}" rel="stylesheet">
+    {% endblock %}
+
+{% block topmenu %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
+    {% else %}
+        {% include 'TaskMngBundle::topmenu_anonim.html.twig' %}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div>
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -21,6 +33,6 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
-        {% block fos_user_content %}
-        {% endblock fos_user_content %}
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
 {% endblock %}

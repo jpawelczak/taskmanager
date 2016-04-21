@@ -53,7 +53,7 @@ class Task
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="resolved_date", type="datetime")
+     * @ORM\Column(name="resolved_date", type="datetime", nullable=true)
      */
     private $resolvedDate;
 
@@ -71,16 +71,16 @@ class Task
      */
     private $deadline;
 
-
     //mapping Task to a user
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="allTasks")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     //mapping all Comments to Task
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="comment")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
     private $allComments;
 
@@ -101,29 +101,6 @@ class Task
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set userId
-     *
-     * @param integer $userId
-     * @return Task
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer 
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -211,7 +188,7 @@ class Task
      * @param \DateTime $resolvedDate
      * @return Task
      */
-    public function setResolvedDate($resolvedDate)
+    public function setResolvedDate($resolvedDate = null)
     {
         $this->resolvedDate = $resolvedDate;
 
@@ -275,14 +252,37 @@ class Task
     }
 
     /**
+     * Set user
+     *
+     * @param integer $user
+     * @return Task
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
      * Add allComments
      *
      * @param \TaskMngBundle\Entity\Comment $allComments
      * @return Task
      */
-    public function addAllComment(\TaskMngBundle\Entity\Comment $allComments)
+    public function addToAllComments(\TaskMngBundle\Entity\Comment $comment)
     {
-        $this->allComments[] = $allComments;
+        $this->allComments[] = $comment;
 
         return $this;
     }
@@ -292,9 +292,9 @@ class Task
      *
      * @param \TaskMngBundle\Entity\Comment $allComments
      */
-    public function removeAllComment(\TaskMngBundle\Entity\Comment $allComments)
+    public function removeAllComment(\TaskMngBundle\Entity\Comment $comment)
     {
-        $this->allComments->removeElement($allComments);
+        $this->allComments->removeElement($comment);
     }
 
     /**

@@ -5,35 +5,38 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="{{ asset('bundles/taskmng/css/jumbotron-narrow.css') }}" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
 <div class="container">
-    {% block body %}
         <div class="header clearfix">
             <nav>
                 {% block topmenu %}{% endblock %}
             </nav>
-            <h3 class="text-muted">Welcome 'User' (TODO)!</h3>
+            <h3 class="text-muted">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    Welcome {{ app.user.username }}!
+                {% endif %}
+            </h3>
         </div>
 
-        <div class="content">
+        <div id="content">
             {% block content %}
             {% endblock %}
         </div>
 
         <nav>
-            {% block footermenu %}{% endblock %}
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation"><a href="#">About (TODO)</a></li>
+                <li role="presentation"><a href="{{ path('fos_user_security_logout') }}">Log out</a></li>
+            </ul>
         </nav>
 
         <footer class="footer">
             <p>&copy; Jakub Pawelczak</p>
         </footer>
-
-
-
-    {% endblock %}
 </div>
 {% block javascripts %}{% endblock %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

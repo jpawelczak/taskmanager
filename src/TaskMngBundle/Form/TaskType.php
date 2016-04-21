@@ -18,7 +18,7 @@ class TaskType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('priority')
+            ->add('priority', 'choice', ['choices' => [0 => 'low', 1 => 'medium', 2 => 'high']])
             ->add('deadline')
             ->add('markedResolved')
             ->add('resolvedDate')

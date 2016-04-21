@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use TaskMngBundle\Entity\Task;
 use TaskMngBundle\Form\TaskType;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Task controller.
@@ -35,6 +37,7 @@ class TaskController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Task entity.
      *
@@ -46,6 +49,12 @@ class TaskController extends Controller
     {
         $entity = new Task();
         $form = $this->createCreateForm($entity);
+
+
+        //validating the Form
+        $validator = $this->get('validator');
+        $errors = $validator->validate($entity);
+
         $form->handleRequest($request);
 
         $entity->setUser($this->getUser());
@@ -104,7 +113,7 @@ class TaskController extends Controller
     /**
      * Finds and displays a Task entity.
      *
-     * @Route("/{id}", name="task_show")
+     * @Route("/{id}", name="task_show", requirements={"^[0-2]"})
      * @Method("GET")
      * @Template()
      */
@@ -171,6 +180,7 @@ class TaskController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Task entity.
      *
@@ -195,7 +205,7 @@ class TaskController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('task_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('task_show', array('id' => $id)));
         }
 
         return array(
@@ -204,6 +214,7 @@ class TaskController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Task entity.
      *

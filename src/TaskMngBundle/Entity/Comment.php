@@ -3,6 +3,7 @@
 namespace TaskMngBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \DateTime;
 
 /**
  * Comment
@@ -37,8 +38,14 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="Task", inversedBy="allComments")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $task;
+
+    public function __construct()
+    {
+        $this->creationDate = new DateTime();
+    }
 
     /**
      * Get id
@@ -48,52 +55,6 @@ class Comment
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set userId
-     *
-     * @param integer $userId
-     * @return Comment
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * Set taskId
-     *
-     * @param integer $taskId
-     * @return Comment
-     */
-    public function setTaskId($taskId)
-    {
-        $this->taskId = $taskId;
-
-        return $this;
-    }
-
-    /**
-     * Get taskId
-     *
-     * @return integer 
-     */
-    public function getTaskId()
-    {
-        return $this->taskId;
     }
 
     /**
@@ -148,7 +109,7 @@ class Comment
      * @param \TaskMngBundle\Entity\Task $task
      * @return Comment
      */
-    public function setTask(\TaskMngBundle\Entity\Task $task = null)
+    public function setTask(\TaskMngBundle\Entity\Task $task)
     {
         $this->task = $task;
 
@@ -158,7 +119,7 @@ class Comment
     /**
      * Get task
      *
-     * @return \TaskMngBundle\Entity\Task 
+     * @return \TaskMngBundle\Entity\Task
      */
     public function getTask()
     {

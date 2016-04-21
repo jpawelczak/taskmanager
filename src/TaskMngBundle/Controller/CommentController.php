@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use TaskMngBundle\Entity\Comment;
 use TaskMngBundle\Form\CommentType;
 
@@ -35,17 +36,59 @@ class CommentController extends Controller
             'entities' => $entities,
         );
     }
+
+    /**
+     * Displays a form to create a new Comment entity.
+     *
+     * @Route("/new/{id}", name="comment_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction($id)
+    {
+        $task = $this->getDoctrine()->getRepository('TaskMngBundle:Task')->find($id);
+
+
+        $entity = new Comment();
+        $form = $this->createForm(new CommentType(), $entity, array(
+            'action' => $this->generateUrl('comment_create', ['id' => $task->getId()]),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Create'));
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
     /**
      * Creates a new Comment entity.
      *
-     * @Route("/", name="comment_create")
+     * @Route("/{id}", name="comment_create")
      * @Method("POST")
      * @Template("TaskMngBundle:Comment:new.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, $id)
     {
+        //load Task with $id
+        $task = $this->getDoctrine()->getRepository('TaskMngBundle:Task')->find($id);
+
         $entity = new Comment();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createForm(new CommentType(), $entity, array(
+            'action' => '',
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Create'));
+
+        //map Comment with Task
+        $entity->setTask($task);
+
+        //add Comment to Task
+        $task->addToAllComments($entity);
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -53,7 +96,7 @@ class CommentController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('comment_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('task_show', ['id' => $task->getId()]));
         }
 
         return array(
@@ -79,24 +122,6 @@ class CommentController extends Controller
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
-    }
-
-    /**
-     * Displays a form to create a new Comment entity.
-     *
-     * @Route("/new", name="comment_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Comment();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
     }
 
     /**
@@ -169,6 +194,7 @@ class CommentController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Comment entity.
      *
@@ -202,6 +228,7 @@ class CommentController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Comment entity.
      *

@@ -9,8 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use TaskMngBundle\Entity\Task;
 use TaskMngBundle\Form\TaskType;
-use Symfony\Component\Validator\Constraints as Assert;
-
+use \DateTime;
 
 /**
  * Task controller.
@@ -39,6 +38,25 @@ class TaskController extends Controller
     }
 
     /**
+     * Displays a form to create a new Task entity.
+     *
+     * @Route("/new", name="task_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $entity = new Task();
+        $entity->setDeadline(new DateTime());
+        $form   = $this->createCreateForm($entity);
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
      * Creates a new Task entity.
      *
      * @Route("/", name="task_create")
@@ -49,11 +67,6 @@ class TaskController extends Controller
     {
         $entity = new Task();
         $form = $this->createCreateForm($entity);
-
-
-        //validating the Form
-        $validator = $this->get('validator');
-        $errors = $validator->validate($entity);
 
         $form->handleRequest($request);
 
@@ -87,33 +100,17 @@ class TaskController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Create',
+            'attr' => array('class' => 'btn btn-lg btn-success')));
 
         return $form;
     }
 
     /**
-     * Displays a form to create a new Task entity.
-     *
-     * @Route("/new", name="task_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Task();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
      * Finds and displays a Task entity.
      *
-     * @Route("/{id}", name="task_show", requirements={"^[0-2]"})
+     * @Route("/{id}", name="task_show")
      * @Method("GET")
      * @Template()
      */
@@ -131,6 +128,36 @@ class TaskController extends Controller
 
         return array(
             'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing Task entity.
+     *
+     * @Route("/{id}/resolved", name="task_resolved")
+     * @Method("GET")
+     * @Template("TaskMngBundle:Task:edit.html.twig")
+     */
+    public function resolvedAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
+
+        $entity->setMarkedResolved(true);
+        $entity->setResolvedDate(new DateTime());
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Task entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -176,7 +203,9 @@ class TaskController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Update',
+            'attr' => array('class' => 'btn btn-lg btn-success')));
 
         return $form;
     }
@@ -253,7 +282,9 @@ class TaskController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('task_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array(
+                'label' => 'Delete',
+                'attr' => array('class' => 'btn btn-sm btn-danger')))
             ->getForm()
         ;
     }

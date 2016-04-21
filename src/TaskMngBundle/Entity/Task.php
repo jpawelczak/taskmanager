@@ -4,6 +4,8 @@ namespace TaskMngBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use \DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Task
@@ -24,7 +26,7 @@ class Task
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -61,12 +63,13 @@ class Task
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer")
+     * @Assert\Range(min = 0, max = 2)
      */
     private $priority;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\GreaterThanOrEqual("today")
      * @ORM\Column(name="deadline", type="datetime")
      */
     private $deadline;

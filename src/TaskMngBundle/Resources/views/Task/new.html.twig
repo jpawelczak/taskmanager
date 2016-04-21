@@ -6,8 +6,10 @@
 
 {% block content %}
     <h1>Create your task:</h1>
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
-    {{ form(form) }}
+    {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
 
         <ul class="record_actions">
     <li>

@@ -30,7 +30,7 @@
                 {% for entity in entities %}
                     <tr>
                         {% if entity.markedResolved == false %}
-                            <td align="center"><a href="{{ path('task_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span></a></td>
+                            <td align="center"><a href="{{ path('task_resolved', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span></a></td>
                         {% else %}
                             <td align="center"><a href="{{ path('task_show', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></a></td>
                         {% endif %}

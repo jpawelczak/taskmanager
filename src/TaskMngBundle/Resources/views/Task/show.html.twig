@@ -69,7 +69,10 @@
                 Add a comment
             </a>
         </li>
-        <li>{{ form(delete_form) }}</li>
+        <li>
+            {{ form_errors(delete_form) }}
+            {{ form_widget(delete_form) }}
+        </li>
     </ul>
 
     <br>

@@ -26,17 +26,32 @@ class TaskController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $user = $this->getUser();
 
-        $em = $this->getDoctrine()->getManager();
+        //$em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('TaskMngBundle:Task')->findBy(array('user' => $user));
+        //$entities = $em->getRepository('TaskMngBundle:Task')->findBy(array('user' => $user));
 
-        return array(
-            'entities' => $entities,
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT a FROM TaskMngBundle:Task a WHERE a.user = :user";
+        $query = $em->createQuery($dql)->setParameter('user', $user);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
         );
+
+        // parameters to template
+        return $this->render('TaskMngBundle:Task:index.html.twig', array('pagination' => $pagination));
+
+//
+//        return array(
+//            'entities' => $entities,
+//        );
     }
 
     /**
@@ -118,7 +133,7 @@ class TaskController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction(Request $request, $id)
+    public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -127,14 +142,6 @@ class TaskController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Task entity.');
         }
-
-        //adding paginator
-//        $paginator = $this->get('knp_paginator');
-//        $pagination = $paginator->paginate(
-//            $entity, /* query NOT result */
-//            $request->query->getInt('page', 1)/*page number*/,
-//            10/*limit per page*/
-//        );
 
         $deleteForm = $this->createDeleteForm($id);
 

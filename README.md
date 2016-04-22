@@ -1,7 +1,10 @@
-taskmanager
-===========
+Task Manager
+============
+My project during Coderslab bootcamp based on Symfony2, Twig, Doctrine, FOSUserBundle, KnpPaginator, Bootstrap, jQuery.
 
-Tips:
+IDE: PHP Storm.
+
+## Tips:
 - add 'use \DateTime' in Entity and use method 'new DateTime()' to create object with date - twig will recognize and render the datetime (note, this is exception for namespace!)
 - add {'attr': {'novalidate': 'novalidate'}} to form(form) to disable HTML5 validation to present exact errors to a user
 - add to an object in newAction that generates Form predefined date to present in a form before submitting ($task->setDeadline(new DateTime());)
@@ -11,9 +14,9 @@ Tips:
 - add confirmation for "Delete" Task button using SweetAlert
 - add email confirmation for registration in fos_user just by enabling it in config.yml. Remember to set postfix on your server and mailer in parameters.yml!
 - using fos_user and ROLEs you can block access to stags, e.g. 'path: ^/category/new , role: ROLE_ADMIN' -> only The Admin can create new Categories. You can check in twig ROLE and show or hide a link "Create a new category" as required.
-
-To improve:
 - add sorting Tasks using knp paginator bundle -> https://github.com/KnpLabs/KnpPaginatorBundle/tree/2.5.3 
+
+## To improve:
 - add 'validation' in Task for Resolved - if markedResolved, date has to be also set in the form
 - creation datetime with server's date, not user's date - add UTC or timestamp
 

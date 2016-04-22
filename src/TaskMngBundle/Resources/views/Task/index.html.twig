@@ -6,28 +6,28 @@
 
 {% block content %}
 
-    <div class="jumbotron">
-        <h2>Task Management service</h2>
-        <p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>
-        <button type="button" class="btn btn-lg btn-success" onclick="location.href='{{ path('task_new') }}'">Add task
-        </button>
-    </div>
+    {#<div class="jumbotron">#}
+        {#<h2>Task Management service</h2>#}
+        {#<p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>#}
+        {#<button type="button" class="btn btn-lg btn-success" onclick="location.href='{{ path('task_new') }}'">Add task#}
+        {#</button>#}
+    {#</div>#}
 
-    <h3>All your tasks below</h3>
+    <h3>All your tasks</h3>
 
     <div>
         <table class="table">
             <thead>
             <tr>
                 <th>Status</th>
-                <th>Name</th>
-                <th>Deadline</th>
+                <th{% if pagination.isSorted('a.Name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Name', 'a.name') }}</th>
+                <th{% if pagination.isSorted('a.Deadline') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Deadline', 'a.deadline') }}</th>
                 <th>Category</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for entity in entities %}
+            {% for entity in pagination %}
                 <tr>
                     {% if entity.markedResolved == false %}
                         <td align="center"><a href="{{ path('task_resolved', { 'id': entity.id }) }}"><span
@@ -42,19 +42,21 @@
                         </a>
                         <section class="taskdetails">
                             <dl>
-                                <dt class="badge">Details</dt>
-                                <dd>
-                                    <div>{{ entity.description }}</div>
-
-                                    {% if entity.priority == 0 %}
-                                        <div>Priority: Low</div>
-                                    {% elseif entity.priority == 1 %}
-                                        <div>Priority: Medium</div>
-                                    {% elseif entity.priority == 2 %}
-                                        <div>Priority: High</div>
-                                    {% endif %}
-                                    <div>Creation
-                                        Date: {% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d') }}{% endif %}</div>
+                                <dt class="label label-info">Details</dt>
+                                <dd><br>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">"{{ entity.description }}"</li>
+                                        {% if entity.priority == 0 %}
+                                            <li class="list-group-item">Priority: Low</li>
+                                        {% elseif entity.priority == 1 %}
+                                            <li class="list-group-item">Priority: Medium</li>
+                                        {% elseif entity.priority == 2 %}
+                                            <li class="list-group-item">Priority: High</li>
+                                        {% endif %}
+                                        <li class="list-group-item">
+                                            Created: {% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d') }}{% endif %}
+                                        </li>
+                                    </ul>
                                 </dd>
                             </dl>
                         </section>
@@ -81,12 +83,13 @@
                                         <dt class="badge">Show all comments [{{ entity.comments|length }}]</dt>
                                         <dd>
                                             {% for comment in entity.comments %}
+                                                <br>
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">
                                                         <a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a>
                                                     </div>
                                                     <div class="panel-footer">
-                                                        Created: {{ comment.creationDate|date('Y-m-d H:i:s') }}
+                                                        Created: {{ comment.creationDate|date('Y-m-d') }}
                                                         by {{ comment.user }}
                                                     </div>
                                                 </div>
@@ -101,6 +104,10 @@
             {% endfor %}
             </tbody>
         </table>
+        {# display navigation #}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
 
         <br>
     </div>

@@ -76,7 +76,7 @@ class Task
 
     //mapping Task to a user
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="allTasks")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -85,7 +85,15 @@ class Task
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
-    private $allComments;
+    private $comments;
+
+    //mapping all Categories to Task
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
+     */
+    private $category;
 
     /**
      * Constructor
@@ -254,13 +262,28 @@ class Task
         return $this->deadline;
     }
 
+
+
+    /**
+     * Set createdDate
+     *
+     * @param \DateTime $createdDate
+     * @return Task
+     */
+    public function setCreatedDate($createdDate)
+    {
+        $this->createdDate = $createdDate;
+
+        return $this;
+    }
+
     /**
      * Set user
      *
-     * @param integer $user
+     * @param \TaskMngBundle\Entity\User $user
      * @return Task
      */
-    public function setUser($user)
+    public function setUser(\TaskMngBundle\Entity\User $user)
     {
         $this->user = $user;
 
@@ -268,9 +291,9 @@ class Task
     }
 
     /**
-     * Get userId
+     * Get user
      *
-     * @return integer
+     * @return \TaskMngBundle\Entity\User 
      */
     public function getUser()
     {
@@ -278,35 +301,58 @@ class Task
     }
 
     /**
-     * Add allComments
+     * Add comments
      *
-     * @param \TaskMngBundle\Entity\Comment $allComments
+     * @param \TaskMngBundle\Entity\Comment $comments
      * @return Task
      */
-    public function addToAllComments(\TaskMngBundle\Entity\Comment $comment)
+    public function addComment(\TaskMngBundle\Entity\Comment $comments)
     {
-        $this->allComments[] = $comment;
+        $this->comments[] = $comments;
 
         return $this;
     }
 
     /**
-     * Remove allComments
+     * Remove comments
      *
-     * @param \TaskMngBundle\Entity\Comment $allComments
+     * @param \TaskMngBundle\Entity\Comment $comments
      */
-    public function removeAllComment(\TaskMngBundle\Entity\Comment $comment)
+    public function removeComment(\TaskMngBundle\Entity\Comment $comments)
     {
-        $this->allComments->removeElement($comment);
+        $this->comments->removeElement($comments);
     }
 
     /**
-     * Get allComments
+     * Get comments
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAllComments()
+    public function getComments()
     {
-        return $this->allComments;
+        return $this->comments;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \TaskMngBundle\Entity\Category $category
+     * @return Task
+     */
+    public function setCategory(\TaskMngBundle\Entity\Category $category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \TaskMngBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

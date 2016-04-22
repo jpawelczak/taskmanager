@@ -38,10 +38,16 @@ class Comment
     private $creationDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Task", inversedBy="allComments")
+     * @ORM\ManyToOne(targetEntity="Task", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $task;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -125,5 +131,28 @@ class Comment
     public function getTask()
     {
         return $this->task;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \TaskMngBundle\Entity\User $user
+     * @return Comment
+     */
+    public function setUser(\TaskMngBundle\Entity\User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \TaskMngBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

@@ -3,6 +3,9 @@
 namespace TaskMngBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Task
@@ -23,7 +26,7 @@ class Task
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -52,7 +55,7 @@ class Task
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="resolved_date", type="datetime")
+     * @ORM\Column(name="resolved_date", type="datetime", nullable=true)
      */
     private $resolvedDate;
 
@@ -60,28 +63,46 @@ class Task
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer")
+     * @Assert\Range(min = 0, max = 2)
      */
     private $priority;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\GreaterThanOrEqual("today")
      * @ORM\Column(name="deadline", type="datetime")
      */
     private $deadline;
 
-
     //mapping Task to a user
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="allTasks")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     //mapping all Comments to Task
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="comment")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
-    private $allComments;
+    private $comments;
+
+    //mapping all Categories to Task
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
+     */
+    private $category;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->createdDate = new DateTime();
+        $this->allComments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -91,29 +112,6 @@ class Task
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set userId
-     *
-     * @param integer $userId
-     * @return Task
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer 
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -163,19 +161,6 @@ class Task
     }
 
     /**
-     * Set createdDate
-     *
-     * @param \DateTime $createdDate
-     * @return Task
-     */
-    public function setCreatedDate($createdDate)
-    {
-        $this->createdDate = $createdDate;
-
-        return $this;
-    }
-
-    /**
      * Get createdDate
      *
      * @return \DateTime 
@@ -214,7 +199,7 @@ class Task
      * @param \DateTime $resolvedDate
      * @return Task
      */
-    public function setResolvedDate($resolvedDate)
+    public function setResolvedDate($resolvedDate = null)
     {
         $this->resolvedDate = $resolvedDate;
 
@@ -276,4 +261,6 @@ class Task
     {
         return $this->deadline;
     }
+
+
 }

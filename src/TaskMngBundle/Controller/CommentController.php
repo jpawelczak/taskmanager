@@ -48,7 +48,6 @@ class CommentController extends Controller
     {
         $task = $this->getDoctrine()->getRepository('TaskMngBundle:Task')->find($id);
 
-
         $entity = new Comment();
         $form = $this->createForm(new CommentType(), $entity, array(
             'action' => $this->generateUrl('comment_create', ['id' => $task->getId()]),
@@ -78,6 +77,8 @@ class CommentController extends Controller
         //load Task with $id
         $task = $this->getDoctrine()->getRepository('TaskMngBundle:Task')->find($id);
 
+        $user = $this->getUser();
+
         $entity = new Comment();
         $form = $this->createForm(new CommentType(), $entity, array(
             'action' => '',
@@ -88,11 +89,14 @@ class CommentController extends Controller
             'label' => 'Create',
             'attr' => array('class' => 'btn btn-sm btn-success')));
 
-        //map Comment with Task
+        //adding Task details to Comment
         $entity->setTask($task);
 
+        //adding User details to Comment
+        $entity->setUser($user);
+
         //add Comment to Task
-        $task->addToAllComments($entity);
+        $task->addComment($entity);
 
         $form->handleRequest($request);
 
@@ -106,6 +110,7 @@ class CommentController extends Controller
 
         return array(
             'entity' => $entity,
+            'user'   => $user,
             'form'   => $form->createView(),
         );
     }
@@ -261,7 +266,7 @@ class CommentController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('comment'));
+        return $this->redirect($this->generateUrl('task'));
     }
 
     /**

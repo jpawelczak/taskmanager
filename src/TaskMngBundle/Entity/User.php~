@@ -22,12 +22,17 @@ class User extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
      */
-    private $allTasks;
+    private $tasks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
+     */
+    private $comments;
 
     public function __construct()
     {
         parent::__construct();
         // your own logic
     }
-
+    
 }

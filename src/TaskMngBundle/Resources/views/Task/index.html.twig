@@ -6,66 +6,86 @@
 
 {% block content %}
 
-        <div class="jumbotron">
-            <h1>Task Management service</h1>
-            <p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>
-            <button type="button" class="btn btn-lg btn-success" onclick="location.href='{{ path('task_new') }}'">Add task</button>
-        </div>
+    <div class="jumbotron">
+        <h2>Task Management service</h2>
+        <p class="lead">Add tasks, deadlines and deliver everything on time! It is super easy!</p>
+        <button type="button" class="btn btn-lg btn-success" onclick="location.href='{{ path('task_new') }}'">Add task
+        </button>
+    </div>
 
-        <h3>All your tasks below</h3>
+    <h3>All your tasks below</h3>
 
-        <div>
-            <table class="table">
-                <thead>
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Deadline</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
                 <tr>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Created date</th>
-                    <th>Priority</th>
-                    <th>Deadline</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for entity in entities %}
-                    <tr>
-                        {% if entity.markedResolved == false %}
-                            <td align="center"><a href="{{ path('task_resolved', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span></a></td>
-                        {% else %}
-                            <td align="center"><a href="{{ path('task_show', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></a></td>
-                        {% endif %}
-                        <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
-                        <td>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        {% if entity.priority == 0 %}
-                            <td>Low</td>
-                        {% elseif entity.priority == 1 %}
-                            <td>Medium</td>
-                        {% elseif entity.priority == 2 %}
-                            <td>High</td>
-                        {% endif %}
-                        <td>{% if entity.deadline %}{{ entity.deadline|date('Y-m-d') }}{% endif %}</td>
-                        <td>
-                            <ul>
-                                    <li>
-                                        <a href="{{ path('task_show', { 'id': entity.id }) }}">Details & Comments <span class="badge">{{ entity.allComments|length }}</span></a>
-                                    </li>
-                                {% if entity.markedResolved == false %}
-                                    <li>
-                                        <a href="{{ path('task_edit', { 'id': entity.id }) }}">Edit the task</a>
-                                    </li>
-                                {% else %}
-                                {% endif %}
-                                    <li>
-                                        <a href="{{ path('comment_new', { 'id': entity.id }) }}">Add comment</a>
-                                    </li>
-                                </ul>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    {% if entity.markedResolved == false %}
+                        <td align="center"><a href="{{ path('task_resolved', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-unchecked" aria-hidden="true"></span></a></td>
+                    {% else %}
+                        <td align="center"><a href="{{ path('task_show', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-check" aria-hidden="true"></span></a></td>
+                    {% endif %}
+                    <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                    <td>{% if entity.deadline %}{{ entity.deadline|date('Y-m-d') }}{% endif %}</td>
+                    <td>
+                        <ul>
+                            {% if entity.markedResolved == false %}
+                                <li>
+                                    <a href="{{ path('task_edit', { 'id': entity.id }) }}">Edit the task</a>
+                                </li>
+                            {% else %}
+                            {% endif %}
+                            <li>
+                                <a href="{{ path('comment_new', { 'id': entity.id }) }}">Add comment</a>
+                            </li>
 
-            <br>
-        </div>
+                            <li>
+                                <section class="superhero-description">
+                                    <dl>
+                                        <dt>Show all details</dt>
+                                        <dd><p>Name: {{ entity.description }}</p>
+
+                                            {% if entity.priority == 0 %}
+                                                <p>Priority: Low</p>
+                                            {% elseif entity.priority == 1 %}
+                                                <p>Priority: Medium</p>
+                                            {% elseif entity.priority == 2 %}
+                                                <p>Priority: High</p>
+                                            {% endif %}
+                                            <p>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</p>
+                                            {% for comment in entity.comments %}
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a>
+                                                    </div>
+                                                    <div class="panel-footer">
+                                                        Created: {{ comment.creationDate|date('Y-m-d H:i:s') }}
+                                                        by {{ comment.user }}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </dd>
+                                    </dl>
+                                </section>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+    </div>
 
 {% endblock %}

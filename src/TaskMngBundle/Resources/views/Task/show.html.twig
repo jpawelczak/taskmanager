@@ -15,6 +15,10 @@
                 <td>{{ entity.description }}</td>
             </tr>
             <tr>
+                <th>Category</th>
+                <td>{{ entity.category }}</td>
+            </tr>
+            <tr>
                 <th>Priority</th>
                 {% if entity.priority == 0 %}
                     <td>Low</td>
@@ -53,37 +57,42 @@
         </table>
     </div>
 
-    <ul class="nav nav-pills" role="tablist">
+<ul class="nav nav-pills" role="tablist">
         <li role="presentation">
-            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">Back to
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
+                Back to
                 the list
             </button>
         </li>
         {% if entity.markedResolved == false %}
             <li role="presentation">
                 <button type="button" class="btn btn-sm btn-success"
-                        onclick="location.href='{{ path('task_edit', { 'id': entity.id }) }}'">Edit the task
+                        onclick="location.href='{{ path('task_edit', { 'id': entity.id }) }}'">
+                    Edit the task
                 </button>
             </li>
         {% else %}
         {% endif %}
         <li role="presentation">
             <button type="button" class="btn btn-sm btn-success"
-                    onclick="location.href='{{ path('comment_new', { 'id': entity.id }) }}'">Add a comment
+                    onclick="location.href='{{ path('comment_new', { 'id': entity.id }) }}'">
+                Add a comment
             </button>
         </li>
         <li>
-            {{ form_errors(delete_form) }}
-            {{ form_widget(delete_form) }}
+            {{ form(delete_form) }}
         </li>
     </ul>
 
     <br>
 
-    <p>List of all comments:</p>
-    {% for comment in entity.allComments %}
-        <p><a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a>,
-            Created: {{ comment.creationDate|date('Y-m-d H:i:s') }}</p>
+    <h3>List of all comments:</h3>
+    {% for comment in entity.comments %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a>            </div>
+            <div class="panel-footer">Created: {{ comment.creationDate|date('Y-m-d H:i:s') }} by {{ comment.user }}</div>
+        </div>
     {% endfor %}
 
 {% endblock %}

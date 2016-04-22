@@ -22,45 +22,83 @@ class User extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
      */
-    private $allTasks;
+    private $tasks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
+     */
+    private $comments;
 
     public function __construct()
     {
         parent::__construct();
         // your own logic
     }
-
+    
 
     /**
-     * Add allTasks
+     * Add tasks
      *
-     * @param \TaskMngBundle\Entity\Task $allTasks
+     * @param \TaskMngBundle\Entity\Task $tasks
      * @return User
      */
-    public function addAllTask(\TaskMngBundle\Entity\Task $allTasks)
+    public function addTask(\TaskMngBundle\Entity\Task $tasks)
     {
-        $this->allTasks[] = $allTasks;
+        $this->tasks[] = $tasks;
 
         return $this;
     }
 
     /**
-     * Remove allTasks
+     * Remove tasks
      *
-     * @param \TaskMngBundle\Entity\Task $allTasks
+     * @param \TaskMngBundle\Entity\Task $tasks
      */
-    public function removeAllTask(\TaskMngBundle\Entity\Task $allTasks)
+    public function removeTask(\TaskMngBundle\Entity\Task $tasks)
     {
-        $this->allTasks->removeElement($allTasks);
+        $this->tasks->removeElement($tasks);
     }
 
     /**
-     * Get allTasks
+     * Get tasks
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAllTasks()
+    public function getTasks()
     {
-        return $this->allTasks;
+        return $this->tasks;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \TaskMngBundle\Entity\Comment $comments
+     * @return User
+     */
+    public function addComment(\TaskMngBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \TaskMngBundle\Entity\Comment $comments
+     */
+    public function removeComment(\TaskMngBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

@@ -1,36 +1,31 @@
 {% extends '::base.html.twig' %}
 
-{% block content %}
-    <h1>Comments</h1>
+{% block topmenu %}
+    {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
+{% endblock %}
 
-    <table class="record_properties">
+{% block content %}
+    <h3>Details of the comment</h3>
+
+    <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Comment</th>
-                <td>{{ entity.comment }}</td>
-            </tr>
-            <tr>
-                <th>Creationdate</th>
-                <td>{{ entity.creationDate|date('Y-m-d H:i:s') }}</td>
-            </tr>
+        <tr>
+            <th>Comment</th>
+            <td>{{ entity.comment }}</td>
+        </tr>
+        <tr>
+            <th>Creation date</th>
+            <td>{{ entity.creationDate|date('Y-m-d H:i:s') }}</td>
+        </tr>
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('comment') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('comment_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
+                Back to Tasks
+            </button>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
 {% endblock %}

@@ -68,10 +68,12 @@ class TaskController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Task();
+
         $form = $this->createCreateForm($entity);
 
         $form->handleRequest($request);
 
+        //adding User details to the Task
         $entity->setUser($this->getUser());
 
         if ($form->isValid()) {
@@ -178,7 +180,7 @@ class TaskController extends Controller
 
         $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
 
-        //throwing 404 if try to enter /edit for the resolved Task
+        //throwing 404 if entering directly /edit for the resolved Task
         if($entity->getMarkedResolved() == true){
             throw $this->createNotFoundException('Unable to find the Task.');
         }
@@ -260,6 +262,7 @@ class TaskController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
+        var_dump($id);
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 

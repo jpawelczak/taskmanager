@@ -22,6 +22,7 @@
                 <th>Status</th>
                 <th>Name</th>
                 <th>Deadline</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -37,9 +38,13 @@
                     {% endif %}
                     <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
                     <td>{% if entity.deadline %}{{ entity.deadline|date('Y-m-d') }}{% endif %}</td>
+                    <td>{{ entity.category }}</td>
                     <td>
                         <ul>
                             {% if entity.markedResolved == false %}
+                                <li>
+                                    <a href="{{ path('task_resolved', { 'id': entity.id }) }}">Resolve the task</a>
+                                </li>
                                 <li>
                                     <a href="{{ path('task_edit', { 'id': entity.id }) }}">Edit the task</a>
                                 </li>
@@ -48,12 +53,12 @@
                             <li>
                                 <a href="{{ path('comment_new', { 'id': entity.id }) }}">Add comment</a>
                             </li>
-
                             <li>
-                                <section class="superhero-description">
+                                <section class="taskdetails">
                                     <dl>
-                                        <dt>Show all details</dt>
-                                        <dd><p>Name: {{ entity.description }}</p>
+                                        <dt>Show task's details</dt>
+                                        <dd>
+                                            <p>Name: {{ entity.description }}</p>
 
                                             {% if entity.priority == 0 %}
                                                 <p>Priority: Low</p>
@@ -62,7 +67,7 @@
                                             {% elseif entity.priority == 2 %}
                                                 <p>Priority: High</p>
                                             {% endif %}
-                                            <p>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</p>
+                                            <p>Creation Date: {% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</p>
                                             {% for comment in entity.comments %}
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">

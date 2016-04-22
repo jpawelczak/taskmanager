@@ -7,7 +7,7 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href="{{ asset('bundles/taskmng/css/jumbotron-narrow.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/taskmng/css/signin.css') }}" rel="stylesheet">
-    {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/taskmng/css/sweetalert.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
@@ -43,6 +43,9 @@
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
 <script src="{{ asset('bundles/taskmng/js/jquery_events_click_on_one_off.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/taskmng/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/taskmng/js/delete_alert.js') }}" type="text/javascript"></script>
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>

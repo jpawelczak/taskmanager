@@ -5,13 +5,11 @@ $(document).ready(function() {
 });
 
 function showComments(){
-    var superheroDescription = $('section.superhero-description');
-    var ddElement = superheroDescription.find('dd');
+    var taskDetails = $('section.taskdetails');
+    var ddElement = taskDetails.find('dd');
     ddElement.hide();
 
-    superheroDescription.find('dt').on('click', function(){
-        //funkcja JQ ktora chowa-pokazuje przy klikaniu (toggle)
-        //na kolejnym elemencie next(), czyli child DT.
+    taskDetails.find('dt').on('click', function(){
         $(this).next().toggle();
     });
 }

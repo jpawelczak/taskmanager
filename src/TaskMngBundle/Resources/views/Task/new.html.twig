@@ -5,17 +5,18 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Create your task:</h1>
+    <h3>Create your task:</h3>
     {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
     {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('task') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
+                Back to
+                the list
+            </button>
+        </li>
+    </ul>
+    <br>
 {% endblock %}

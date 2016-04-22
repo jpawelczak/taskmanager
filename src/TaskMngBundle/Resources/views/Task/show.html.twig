@@ -36,7 +36,8 @@
                 <tr>
                     <th>Resolved?</th>
                     <td>Not resolved
-                        <a class="btn btn-xs btn-primary" href="{{ path('task_resolved', { 'id': entity.id }) }}">Done!</a>
+                        <a class="btn btn-xs btn-primary"
+                           href="{{ path('task_resolved', { 'id': entity.id }) }}">Done!</a>
                     </td>
                 </tr>
             {% else %}
@@ -57,7 +58,7 @@
         </table>
     </div>
 
-<ul class="nav nav-pills" role="tablist">
+    <ul class="nav nav-pills" role="tablist">
         <li role="presentation">
             <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
                 Back to
@@ -90,8 +91,9 @@
     {% for comment in entity.comments %}
         <div class="panel panel-default">
             <div class="panel-body">
-                <a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a>            </div>
-            <div class="panel-footer">Created: {{ comment.creationDate|date('Y-m-d H:i:s') }} by {{ comment.user }}</div>
+                <a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a></div>
+            <div class="panel-footer">Created: {{ comment.creationDate|date('Y-m-d H:i:s') }}
+                by {{ comment.user }}</div>
         </div>
     {% endfor %}
 

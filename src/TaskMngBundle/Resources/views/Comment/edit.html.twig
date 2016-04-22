@@ -5,17 +5,17 @@
 {% endblock %}
 
 {% block body -%}
-    <h1>Comment edit</h1>
-    {% form_theme form 'bootstrap_3_layout.html.twig' %}
-
+    <h3>Edit comment</h3>
     {{ form(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('comment') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('comment') }}'">
+                Back to
+                the list
+            </button>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+    <br>
 {% endblock %}

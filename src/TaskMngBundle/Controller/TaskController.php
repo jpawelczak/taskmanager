@@ -106,7 +106,7 @@ class TaskController extends Controller
 
         $form->add('submit', 'submit', array(
             'label' => 'Create',
-            'attr' => array('class' => 'btn btn-lg btn-success')));
+            'attr' => array('class' => 'btn btn-sm btn-success')));
 
         return $form;
     }
@@ -118,7 +118,7 @@ class TaskController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -127,6 +127,14 @@ class TaskController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Task entity.');
         }
+
+        //adding paginator
+//        $paginator = $this->get('knp_paginator');
+//        $pagination = $paginator->paginate(
+//            $entity, /* query NOT result */
+//            $request->query->getInt('page', 1)/*page number*/,
+//            10/*limit per page*/
+//        );
 
         $deleteForm = $this->createDeleteForm($id);
 

@@ -36,11 +36,33 @@
                         <td align="center"><a href="{{ path('task_show', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-check" aria-hidden="true"></span></a></td>
                     {% endif %}
-                    <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                    <td>
+                        <a href="{{ path('task_show', { 'id': entity.id }) }}">
+                            {{ entity.name }}
+                        </a>
+                        <section class="taskdetails">
+                            <dl>
+                                <dt class="badge">Details</dt>
+                                <dd>
+                                    <div>{{ entity.description }}</div>
+
+                                    {% if entity.priority == 0 %}
+                                        <div>Priority: Low</div>
+                                    {% elseif entity.priority == 1 %}
+                                        <div>Priority: Medium</div>
+                                    {% elseif entity.priority == 2 %}
+                                        <div>Priority: High</div>
+                                    {% endif %}
+                                    <div>Creation
+                                        Date: {% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d') }}{% endif %}</div>
+                                </dd>
+                            </dl>
+                        </section>
+                    </td>
                     <td>{% if entity.deadline %}{{ entity.deadline|date('Y-m-d') }}{% endif %}</td>
                     <td>{{ entity.category }}</td>
                     <td>
-                        <ul>
+                        <ul class="nav">
                             {% if entity.markedResolved == false %}
                                 <li>
                                     <a href="{{ path('task_resolved', { 'id': entity.id }) }}">Resolve the task</a>
@@ -56,18 +78,8 @@
                             <li>
                                 <section class="taskdetails">
                                     <dl>
-                                        <dt>Show task's details</dt>
+                                        <dt class="badge">Show all comments [{{ entity.comments|length }}]</dt>
                                         <dd>
-                                            <p>Name: {{ entity.description }}</p>
-
-                                            {% if entity.priority == 0 %}
-                                                <p>Priority: Low</p>
-                                            {% elseif entity.priority == 1 %}
-                                                <p>Priority: Medium</p>
-                                            {% elseif entity.priority == 2 %}
-                                                <p>Priority: High</p>
-                                            {% endif %}
-                                            <p>Creation Date: {% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</p>
                                             {% for comment in entity.comments %}
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">

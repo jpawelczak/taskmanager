@@ -5,14 +5,16 @@
 {% block content %}
     <h3>Edit task: {{ entity.name }}</h3>
 
-    {{ form(edit_form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form(edit_form, {'attr': {'novalidate': 'novalidate'}, 'attr': { 'class': 'form-signin' }}) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('task') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
+                Back to
+                the list
+            </button>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+    <br>
 {% endblock %}

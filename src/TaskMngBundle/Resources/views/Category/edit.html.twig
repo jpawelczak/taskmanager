@@ -2,18 +2,17 @@
 {% block topmenu %}
     {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
 {% endblock %}
-{% block content -%}
-    <h1>Category edit</h1>
-    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block content %}
+    <h3>Edit category </h3>
 
     {{ form(edit_form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('category') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+            <a class="label label-success" href="{{ path('category') }}">
+                Back to Categories
+            </a>
+        </li>
+    </ul>
+    <br>
 {% endblock %}

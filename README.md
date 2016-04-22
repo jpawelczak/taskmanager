@@ -9,11 +9,12 @@ Tips:
 - use jQuery for hide onClick event to show details to use without reloading a page
 - add list of categories from other DB by adding to Your_action_nameForm "->add('category')". Also you need to add "__toString" to appropriate Entity to parse names and provide them to the form as list to choose
 - add confirmation for "Delete" Task button using SweetAlert
+- add email confirmation for registration in fos_user just by enabling it in config.yml. Remember to set postfix on your server and mailer in parameters.yml!
+- using fos_user and ROLEs you can block access to stags, e.g. 'path: ^/category/new , role: ROLE_ADMIN' -> only The Admin can create new Categories. You can check in twig ROLE and show or hide a link "Create a new category" as required.
 
 To improve:
-- different RULEs for admin and user
+- add sorting Tasks using knp paginator bundle -> https://github.com/KnpLabs/KnpPaginatorBundle/tree/2.5.3 
 - add 'validation' in Task for Resolved - if markedResolved, date has to be also set in the form
-- deadline datetime - start from today 
 - creation datetime with server's date, not user's date - add UTC or timestamp
 
 

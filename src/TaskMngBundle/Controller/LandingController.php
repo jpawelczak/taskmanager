@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use \DateTime;
 use Symfony\Component\HttpFoundation\Response;
 
 class LandingController extends Controller
@@ -24,7 +23,5 @@ class LandingController extends Controller
     {
         return [];
     }
-
-
 
 }

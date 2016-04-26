@@ -90,3 +90,26 @@ fos_user:
     from_email:
         address:        noreply@taskmngapp.com
         sender_name:    Task Mng App
+
+hwi_oauth:
+    connect:
+        account_connector: my.custom.user_provider
+    firewall_names: [secured_area]
+    fosub:
+        username_iterations: 30
+        properties:
+            facebook:    facebook_id
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           id
+            client_secret:       secret
+            scope:         scope
+#            options:
+#                display: popup #dialog is optimized for popup window
+#                csrf: true
+
+services:
+    my.custom.user_provider:
+        class:        MyBundle\Security\Core\User\MyFOSUBUserProvider
+        arguments: ['@fos_user.user_manager', { facebook: facebook_id }]

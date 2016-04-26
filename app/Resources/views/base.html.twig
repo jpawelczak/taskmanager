@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     {#<link href="{{ asset('bundles/taskmng/css/jumbotron-narrow.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('bundles/taskmng/css/jumbotron-narrow.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/taskmng/css/signin.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/taskmng/css/sweetalert.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
@@ -18,7 +19,7 @@
             </nav>
             <h3 class="text-muted">
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    Welcome {{ app.user.username }} in CreateMore!
+                    Welcome in CreateMore {{ app.user.username }}!
                 {% endif %}
             </h3>
         </div>

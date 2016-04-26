@@ -17,6 +17,7 @@ IDE: PHP Storm.
 - add sorting Tasks using knp paginator bundle -> https://github.com/KnpLabs/KnpPaginatorBundle/tree/2.5.3 
 
 ## To improve:
+- use HWIOAuthBundle to support login via FB or Google+
 - add 'validation' in Task for Resolved - if markedResolved, date has to be also set in the form
 - creation datetime with server's date, not user's date - add UTC or timestamp
 

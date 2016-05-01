@@ -5,6 +5,7 @@ namespace TaskMngBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use \DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextFactoryInterface;
 
 
 /**
@@ -102,6 +103,17 @@ class Task
     {
         $this->createdDate = new DateTime();
         $this->allComments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    //checking if ResolvedDate set for markedResolved
+    public function validate(ExecutionContextFactoryInterface $context)
+    {
+        if($this->getMarkedResolved() === true && $this->getResolvedDate() === null) {
+            $context->buildViolation('Please choose date for the resolved task')
+                ->atPath('resolvedDate')
+                ->addViolation();
+        }
+
     }
 
     /**

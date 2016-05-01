@@ -20,7 +20,7 @@ class CommentController extends Controller
 {
 
     /**
-     * Lists all Comment entities.
+     * Lists all Comments.
      *
      * @Route("/", name="comment")
      * @Method("GET")
@@ -30,15 +30,15 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('TaskMngBundle:Comment')->findAll();
+        $comments = $em->getRepository('TaskMngBundle:Comment')->findAll();
 
         return array(
-            'entities' => $entities,
+            'comments' => $comments,
         );
     }
 
     /**
-     * Displays a form to create a new Comment entity.
+     * Displays a form to create a new Comment.
      *
      * @Route("/new/{id}", name="comment_new")
      * @Method("GET")
@@ -48,8 +48,8 @@ class CommentController extends Controller
     {
         $task = $this->getDoctrine()->getRepository('TaskMngBundle:Task')->find($id);
 
-        $entity = new Comment();
-        $form = $this->createForm(new CommentType(), $entity, array(
+        $newComment = new Comment();
+        $form = $this->createForm(new CommentType(), $newComment, array(
             'action' => $this->generateUrl('comment_create', ['id' => $task->getId()]),
             'method' => 'POST',
         ));
@@ -59,14 +59,14 @@ class CommentController extends Controller
             'attr' => array('class' => 'btn btn-sm btn-success')));
 
         return array(
-            'entity' => $entity,
+            'comment' => $newComment,
             'task' => $task,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a new Comment entity.
+     * Creates a new Comment.
      *
      * @Route("/{id}", name="comment_create")
      * @Method("POST")
@@ -79,8 +79,8 @@ class CommentController extends Controller
 
         $user = $this->getUser();
 
-        $entity = new Comment();
-        $form = $this->createForm(new CommentType(), $entity, array(
+        $newComment = new Comment();
+        $form = $this->createForm(new CommentType(), $newComment, array(
             'action' => '',
             'method' => 'POST',
         ));
@@ -90,41 +90,41 @@ class CommentController extends Controller
             'attr' => array('class' => 'btn btn-sm btn-success')));
 
         //adding Task details to Comment
-        $entity->setTask($task);
+        $newComment->setTask($task);
 
         //adding User details to Comment
-        $entity->setUser($user);
+        $newComment->setUser($user);
 
         //add Comment to Task
-        $task->addComment($entity);
+        $task->addComment($newComment);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($newComment);
             $em->flush();
 
             return $this->redirect($this->generateUrl('task_show', ['id' => $task->getId()]));
         }
 
         return array(
-            'entity' => $entity,
+            'comment' => $newComment,
             'user'   => $user,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a form to create a Comment entity.
+     * Creates a form to create a Comment.
      *
-     * @param Comment $entity The entity
+     * @param Comment $newComment The comment
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Comment $entity)
+    private function createCreateForm(Comment $newComment)
     {
-        $form = $this->createForm(new CommentType(), $entity, array(
+        $form = $this->createForm(new CommentType(), $newComment, array(
             'action' => $this->generateUrl('comment_create'),
             'method' => 'POST',
         ));
@@ -137,7 +137,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Finds and displays a Comment entity.
+     * Finds and displays a Comment.
      *
      * @Route("/{id}", name="comment_show")
      * @Method("GET")
@@ -147,22 +147,22 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Comment')->find($id);
+        $comment = $em->getRepository('TaskMngBundle:Comment')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+        if (!$comment) {
+            throw $this->createNotFoundException('Unable to find Comment.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'comment'      => $comment,
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing Comment entity.
+     * Displays a form to edit an existing Comment.
      *
      * @Route("/{id}/edit", name="comment_edit")
      * @Method("GET")
@@ -172,33 +172,33 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Comment')->find($id);
+        $comment = $em->getRepository('TaskMngBundle:Comment')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+        if (!$comment) {
+            throw $this->createNotFoundException('Unable to find Comment.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($comment);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'comment'      => $comment,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Comment entity.
+    * Creates a form to edit a Comment.
     *
-    * @param Comment $entity The entity
+    * @param Comment $comment The comment
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Comment $entity)
+    private function createEditForm(Comment $comment)
     {
-        $form = $this->createForm(new CommentType(), $entity, array(
-            'action' => $this->generateUrl('comment_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CommentType(), $comment, array(
+            'action' => $this->generateUrl('comment_update', array('id' => $comment->getId())),
             'method' => 'PUT',
         ));
 
@@ -210,7 +210,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Edits an existing Comment entity.
+     * Edits an existing Comment.
      *
      * @Route("/{id}", name="comment_update")
      * @Method("PUT")
@@ -220,14 +220,14 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Comment')->find($id);
+        $comment = $em->getRepository('TaskMngBundle:Comment')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+        if (!$comment) {
+            throw $this->createNotFoundException('Unable to find Comment.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($comment);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -237,14 +237,14 @@ class CommentController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
+            'comment'      => $comment,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Deletes a Comment entity.
+     * Deletes a Comment.
      *
      * @Route("/{id}", name="comment_delete")
      * @Method("DELETE")
@@ -256,13 +256,13 @@ class CommentController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TaskMngBundle:Comment')->find($id);
+            $comment = $em->getRepository('TaskMngBundle:Comment')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Comment entity.');
+            if (!$comment) {
+                throw $this->createNotFoundException('Unable to find the Comment.');
             }
 
-            $em->remove($entity);
+            $em->remove($comment);
             $em->flush();
         }
 
@@ -270,9 +270,9 @@ class CommentController extends Controller
     }
 
     /**
-     * Creates a form to delete a Comment entity by id.
+     * Creates a form to delete a Comment by id.
      *
-     * @param mixed $id The entity id
+     * @param mixed $id The Comment id
      *
      * @return \Symfony\Component\Form\Form The form
      */

@@ -20,7 +20,7 @@ class TaskController extends Controller
 {
 
     /**
-     * Lists all Task entities.
+     * Lists all Tasks.
      *
      * @Route("/", name="task")
      * @Method("GET")
@@ -29,10 +29,6 @@ class TaskController extends Controller
     public function indexAction(Request $request)
     {
         $user = $this->getUser();
-
-        //$em = $this->getDoctrine()->getManager();
-
-        //$entities = $em->getRepository('TaskMngBundle:Task')->findBy(array('user' => $user));
 
         $em    = $this->get('doctrine.orm.entity_manager');
         $dql   = "SELECT a FROM TaskMngBundle:Task a WHERE a.user = :user";
@@ -48,14 +44,10 @@ class TaskController extends Controller
         // parameters to template
         return $this->render('TaskMngBundle:Task:index.html.twig', array('pagination' => $pagination));
 
-//
-//        return array(
-//            'entities' => $entities,
-//        );
     }
 
     /**
-     * Displays a form to create a new Task entity.
+     * Displays a form to create a new Task.
      *
      * @Route("/new", name="task_new")
      * @Method("GET")
@@ -63,18 +55,18 @@ class TaskController extends Controller
      */
     public function newAction()
     {
-        $entity = new Task();
-        $entity->setDeadline(new DateTime());
-        $form   = $this->createCreateForm($entity);
+        $newTask = new Task();
+        $newTask->setDeadline(new DateTime());
+        $form   = $this->createCreateForm($newTask);
 
         return array(
-            'entity' => $entity,
+            'task' => $newTask,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a new Task entity.
+     * Creates a new Task.
      *
      * @Route("/", name="task_create")
      * @Method("POST")
@@ -82,39 +74,39 @@ class TaskController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Task();
+        $newTask = new Task();
 
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($newTask);
 
         $form->handleRequest($request);
 
         //adding User details to the Task
-        $entity->setUser($this->getUser());
+        $newTask->setUser($this->getUser());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($newTask);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('task_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('task_show', array('id' => $newTask->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'task' => $newTask,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a form to create a Task entity.
+     * Creates a form to create a Task .
      *
-     * @param Task $entity The entity
+     * @param Task $newtask The task
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Task $entity)
+    private function createCreateForm(Task $newTask)
     {
-        $form = $this->createForm(new TaskType(), $entity, array(
+        $form = $this->createForm(new TaskType(), $newTask, array(
             'action' => $this->generateUrl('task_create'),
             'method' => 'POST',
         ));
@@ -127,7 +119,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Finds and displays a Task entity.
+     * Finds and displays a Task.
      *
      * @Route("/{id}", name="task_show")
      * @Method("GET")
@@ -137,22 +129,22 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
+        $task = $em->getRepository('TaskMngBundle:Task')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Task entity.');
+        if (!$task) {
+            throw $this->createNotFoundException('Unable to find the Task.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'task'      => $task,
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing Task entity.
+     * Displays a form to edit an existing Task.
      *
      * @Route("/{id}/resolved", name="task_resolved")
      * @Method("GET")
@@ -162,28 +154,28 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
+        $task = $em->getRepository('TaskMngBundle:Task')->find($id);
 
         //setting up as markedResolved with 'today' date
-        $entity->setMarkedResolved(true);
-        $entity->setResolvedDate(new DateTime());
+        $task->setMarkedResolved(true);
+        //$entity->setResolvedDate(new DateTime());
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Task entity.');
+        if (!$task) {
+            throw $this->createNotFoundException('Unable to find the Task.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($task);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'task'      => $task,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing Task entity.
+     * Displays a form to edit an existing Task.
      *
      * @Route("/{id}/edit", name="task_edit")
      * @Method("GET")
@@ -193,38 +185,38 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
+        $task = $em->getRepository('TaskMngBundle:Task')->find($id);
 
         //throwing 404 if entering directly /edit for the resolved Task
-        if($entity->getMarkedResolved() == true){
+        if($task->getMarkedResolved() == true){
             throw $this->createNotFoundException('Unable to find the Task.');
         }
 
-        if (!$entity) {
+        if (!$task) {
             throw $this->createNotFoundException('Unable to find the Task.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($task);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'task'      => $task,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Task entity.
+    * Creates a form to edit a Task .
     *
-    * @param Task $entity The entity
+    * @param Task $task The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Task $entity)
+    private function createEditForm(Task $task)
     {
-        $form = $this->createForm(new TaskType(), $entity, array(
-            'action' => $this->generateUrl('task_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new TaskType(), $task, array(
+            'action' => $this->generateUrl('task_update', array('id' => $task->getId())),
             'method' => 'PUT',
         ));
 
@@ -236,7 +228,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Edits an existing Task entity.
+     * Edits an existing Task.
      *
      * @Route("/{id}", name="task_update")
      * @Method("PUT")
@@ -246,14 +238,14 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
+        $task = $em->getRepository('TaskMngBundle:Task')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Task entity.');
+        if (!$task) {
+            throw $this->createNotFoundException('Unable to find the Task.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($task);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -263,33 +255,32 @@ class TaskController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
+            'task'      => $task,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Deletes a Task entity.
+     * Deletes a Task.
      *
      * @Route("/{id}", name="task_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
     {
-        var_dump($id);
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TaskMngBundle:Task')->find($id);
+            $task = $em->getRepository('TaskMngBundle:Task')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Task entity.');
+            if (!$task) {
+                throw $this->createNotFoundException('Unable to find the Task.');
             }
 
-            $em->remove($entity);
+            $em->remove($task);
             $em->flush();
         }
 
@@ -297,9 +288,9 @@ class TaskController extends Controller
     }
 
     /**
-     * Creates a form to delete a Task entity by id.
+     * Creates a form to delete a Task by id.
      *
-     * @param mixed $id The entity id
+     * @param mixed $id The Task id
      *
      * @return \Symfony\Component\Form\Form The form
      */

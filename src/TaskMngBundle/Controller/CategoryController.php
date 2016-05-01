@@ -19,7 +19,7 @@ class CategoryController extends Controller
 {
 
     /**
-     * Lists all Category entities.
+     * Lists all Categories.
      *
      * @Route("/", name="category")
      * @Method("GET")
@@ -29,14 +29,14 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('TaskMngBundle:Category')->findAll();
+        $categories = $em->getRepository('TaskMngBundle:Category')->findAll();
 
         return array(
-            'entities' => $entities,
+            'categories' => $categories,
         );
     }
     /**
-     * Creates a new Category entity.
+     * Creates a new Category.
      *
      * @Route("/", name="category_create")
      * @Method("POST")
@@ -44,35 +44,35 @@ class CategoryController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Category();
+        $newCategory = new Category();
 
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($newCategory);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($newCategory);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('category_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('category_show', array('id' => $newCategory->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'category' => $newCategory,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Creates a form to create a Category entity.
+     * Creates a form to create a Category.
      *
-     * @param Category $entity The entity
+     * @param Category $newCategory The new category
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Category $entity)
+    private function createCreateForm(Category $newCategory)
     {
-        $form = $this->createForm(new CategoryType(), $entity, array(
+        $form = $this->createForm(new CategoryType(), $newCategory, array(
             'action' => $this->generateUrl('category_create'),
             'method' => 'POST',
         ));
@@ -85,7 +85,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Displays a form to create a new Category entity.
+     * Displays a form to create a new Category.
      *
      * @Route("/new", name="category_new")
      * @Method("GET")
@@ -93,17 +93,17 @@ class CategoryController extends Controller
      */
     public function newAction()
     {
-        $entity = new Category();
-        $form   = $this->createCreateForm($entity);
+        $newCategory = new Category();
+        $form   = $this->createCreateForm($newCategory);
 
         return array(
-            'entity' => $entity,
+            'category' => $newCategory,
             'form'   => $form->createView(),
         );
     }
 
     /**
-     * Finds and displays a Category entity.
+     * Finds and displays a Category.
      *
      * @Route("/{id}", name="category_show")
      * @Method("GET")
@@ -113,22 +113,22 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Category')->find($id);
+        $category = $em->getRepository('TaskMngBundle:Category')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
+        if (!$category) {
+            throw $this->createNotFoundException('Unable to find Category.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'category'      => $category,
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Displays a form to edit an existing Category entity.
+     * Displays a form to edit an existing Category.
      *
      * @Route("/{id}/edit", name="category_edit")
      * @Method("GET")
@@ -138,33 +138,33 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Category')->find($id);
+        $category = $em->getRepository('TaskMngBundle:Category')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
+        if (!$category) {
+            throw $this->createNotFoundException('Unable to find Category.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($category);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'category'    => $category,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Category entity.
+    * Creates a form to edit a Category.
     *
-    * @param Category $entity The entity
+    * @param Category $category The category
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Category $entity)
+    private function createEditForm(Category $category)
     {
-        $form = $this->createForm(new CategoryType(), $entity, array(
-            'action' => $this->generateUrl('category_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CategoryType(), $category, array(
+            'action' => $this->generateUrl('category_update', array('id' => $category->getId())),
             'method' => 'PUT',
         ));
 
@@ -175,7 +175,7 @@ class CategoryController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Category entity.
+     * Edits an existing Category.
      *
      * @Route("/{id}", name="category_update")
      * @Method("PUT")
@@ -185,14 +185,14 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('TaskMngBundle:Category')->find($id);
+        $category = $em->getRepository('TaskMngBundle:Category')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
+        if (!$category) {
+            throw $this->createNotFoundException('Unable to find Category.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($category);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -202,13 +202,13 @@ class CategoryController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
+            'category'    => $category,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
     /**
-     * Deletes a Category entity.
+     * Deletes a Category.
      *
      * @Route("/{id}", name="category_delete")
      * @Method("DELETE")
@@ -220,13 +220,13 @@ class CategoryController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TaskMngBundle:Category')->find($id);
+            $category = $em->getRepository('TaskMngBundle:Category')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Category entity.');
+            if (!$category) {
+                throw $this->createNotFoundException('Unable to find Category.');
             }
 
-            $em->remove($entity);
+            $em->remove($category);
             $em->flush();
         }
 
@@ -234,9 +234,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Creates a form to delete a Category entity by id.
+     * Creates a form to delete a Category by id.
      *
-     * @param mixed $id The entity id
+     * @param mixed $id The Category id
      *
      * @return \Symfony\Component\Form\Form The form
      */

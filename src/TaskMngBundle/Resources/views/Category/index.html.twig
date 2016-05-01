@@ -13,16 +13,16 @@
         </tr>
         </thead>
         <tbody>
-        {% for entity in entities %}
+        {% for category in categories %}
             <tr>
-                <td>{{ entity.name }}</td>
+                <td>{{ category.name }}</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('category_show', { 'id': entity.id }) }}">show</a>
+                            <a href="{{ path('category_show', { 'id': category.id }) }}">show</a>
                         </li>
                         <li>
-                            <a href="{{ path('category_edit', { 'id': entity.id }) }}">edit</a>
+                            <a href="{{ path('category_edit', { 'id': category.id }) }}">edit</a>
                         </li>
                     </ul>
                 </td>
@@ -35,6 +35,11 @@
         <li role="presentation">
             <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('category_new') }}'">
                 Create a new category
+            </button>
+        </li>
+        <li role="presentation">
+            <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
+                Back to Tasks
             </button>
         </li>
     </ul>

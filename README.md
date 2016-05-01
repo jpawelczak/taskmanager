@@ -1,8 +1,10 @@
 Task Manager
 ============
-My project during Coderslab bootcamp based on Symfony2, Twig, Doctrine, FOSUserBundle, KnpPaginator, Bootstrap, jQuery.
+My project during Coderslab bootcamp based on Symfony2, Twig, Doctrine, FOSUserBundle, HWIOAuthBundle, KnpPaginator, Bootstrap, jQuery.
 
 IDE: PHP Storm.
+
+Note: HWIOAuthBundle doesn't connect to FB, because I would have to register the app at first.
 
 ## Tips:
 - add 'use \DateTime' in Entity and use method 'new DateTime()' to create object with date - twig will recognize and render the datetime (note, this is exception for namespace!)
@@ -15,10 +17,11 @@ IDE: PHP Storm.
 - add email confirmation for registration in fos_user just by enabling it in config.yml. Remember to set postfix on your server and mailer in parameters.yml!
 - using fos_user and ROLEs you can block access to stags, e.g. 'path: ^/category/new , role: ROLE_ADMIN' -> only The Admin can create new Categories. You can check in twig ROLE and show or hide a link "Create a new category" as required.
 - add sorting Tasks using knp paginator bundle -> https://github.com/KnpLabs/KnpPaginatorBundle/tree/2.5.3 
+- add HWIOAuthBundle to support login via FB (and other services)
 
-## To improve:
-- use HWIOAuthBundle to support login via FB or Google+
-- add 'validation' in Task for Resolved - if markedResolved, date has to be also set in the form
+## To improve/ TODO:
+- deploy app on AWS
+- create a simple questionaire (e.g. date of birth day, anniversary)
+- create predefined tasks based on answers (e.g. create Task to choose a present and seperate to buy it)
 - creation datetime with server's date, not user's date - add UTC or timestamp
-
 

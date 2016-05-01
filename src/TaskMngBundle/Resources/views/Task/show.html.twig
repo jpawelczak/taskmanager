@@ -6,38 +6,38 @@
 
 {% block content %}
 
-    <h3>Task name: {{ entity.name }}</h3>
+    <h3>Task name: {{ task.name }}</h3>
     <div>
         <table class="table">
             <tbody>
             <tr>
                 <th>Description</th>
-                <td>{{ entity.description }}</td>
+                <td>{{ task.description }}</td>
             </tr>
             <tr>
                 <th>Category</th>
-                <td>{{ entity.category }}</td>
+                <td>{{ task.category }}</td>
             </tr>
             <tr>
                 <th>Priority</th>
-                {% if entity.priority == 0 %}
+                {% if task.priority == 0 %}
                     <td>Low</td>
-                {% elseif entity.priority == 1 %}
+                {% elseif task.priority == 1 %}
                     <td>Medium</td>
-                {% elseif entity.priority == 2 %}
+                {% elseif task.priority == 2 %}
                     <td>High</td>
                 {% endif %}
             </tr>
             <tr>
                 <th>Created date</th>
-                <td>{{ entity.createdDate|date('Y-m-d H:i:s') }}</td>
+                <td>{{ task.createdDate|date('Y-m-d H:i:s') }}</td>
             </tr>
-            {% if entity.markedResolved == false %}
+            {% if task.markedResolved == false %}
                 <tr>
                     <th>Resolved?</th>
                     <td>Not resolved
                         <a class="btn btn-xs btn-primary"
-                           href="{{ path('task_resolved', { 'id': entity.id }) }}">Done!</a>
+                           href="{{ path('task_resolved', { 'id': task.id }) }}">Done!</a>
                     </td>
                 </tr>
             {% else %}
@@ -47,12 +47,12 @@
                 </tr>
                 <tr>
                     <th>Resolved date</th>
-                    <td>{{ entity.resolvedDate|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ task.resolvedDate|date('Y-m-d H:i:s') }}</td>
                 </tr>
             {% endif %}
             <tr>
                 <th>Deadline</th>
-                <td>{{ entity.deadline|date('Y-m-d H:i:s') }}</td>
+                <td>{{ task.deadline|date('Y-m-d H:i:s') }}</td>
             </tr>
             </tbody>
         </table>
@@ -61,14 +61,13 @@
     <ul class="nav nav-pills" role="tablist">
         <li role="presentation">
             <button type="button" class="btn btn-sm btn-success" onclick="location.href='{{ path('task') }}'">
-                Back to
-                the list
+                Back to Tasks
             </button>
         </li>
-        {% if entity.markedResolved == false %}
+        {% if task.markedResolved == false %}
             <li role="presentation">
                 <button type="button" class="btn btn-sm btn-success"
-                        onclick="location.href='{{ path('task_edit', { 'id': entity.id }) }}'">
+                        onclick="location.href='{{ path('task_edit', { 'id': task.id }) }}'">
                     Edit the task
                 </button>
             </li>
@@ -76,7 +75,7 @@
         {% endif %}
         <li role="presentation">
             <button type="button" class="btn btn-sm btn-success"
-                    onclick="location.href='{{ path('comment_new', { 'id': entity.id }) }}'">
+                    onclick="location.href='{{ path('comment_new', { 'id': task.id }) }}'">
                 Add a comment
             </button>
         </li>
@@ -88,7 +87,7 @@
     <br>
 
     <h3>List of all comments:</h3>
-    {% for comment in entity.comments %}
+    {% for comment in task.comments %}
         <div class="panel panel-default">
             <div class="panel-body">
                 <a href="{{ path('comment_show', { 'id': comment.id }) }}">{{ comment.comment }}</a></div>

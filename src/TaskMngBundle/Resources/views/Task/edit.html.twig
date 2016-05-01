@@ -3,7 +3,7 @@
     {% include 'TaskMngBundle::topmenu_logged.html.twig' %}
 {% endblock %}
 {% block content %}
-    <h3>Edit task: {{ entity.name }}</h3>
+    <h3>Edit task: {{ task.name }}</h3>
 
     {{ form(edit_form, {'attr': {'novalidate': 'novalidate'}, 'attr': { 'class': 'form-signin' }}) }}
 

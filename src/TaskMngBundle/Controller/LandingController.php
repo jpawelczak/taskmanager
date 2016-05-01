@@ -15,7 +15,7 @@ class LandingController extends Controller
     /**
      * Landing page
      *
-     * @Route("/landing", name="landing")
+     * @Route("/", name="landing")
      * @Method("GET")
      * @Template("TaskMngBundle::landing.html.twig")
      */

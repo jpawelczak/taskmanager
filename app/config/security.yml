@@ -37,10 +37,13 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/demo/secured , role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/landing, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/category/new , role: ROLE_ADMIN }
-        - { path: ^/ , role: ROLE_USER }
+        - { path: ^/task , role: ROLE_USER }
+        - { path: ^/comment , role: ROLE_USER }
+        - { path: ^/category , role: ROLE_USER }
+        - { path: ^/profile , role: ROLE_USER }
+        - { path: ^/ , role: IS_AUTHENTICATED_ANONYMOUSLY }

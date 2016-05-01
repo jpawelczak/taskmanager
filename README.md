@@ -21,7 +21,6 @@ Note: HWIOAuthBundle doesn't connect to FB, because I would have to register the
 - deployed the app on AWS
 
 ## To improve/ TODO:
-- deploy app on AWS
 - create a simple questionnaire (e.g. date of birth day, anniversary)
 - create predefined tasks based on answers (e.g. create Task to choose a present and seperate to buy it)
 - creation datetime with server's date, not user's date - add UTC or timestamp

@@ -18,10 +18,10 @@ Note: HWIOAuthBundle doesn't connect to FB, because I would have to register the
 - using fos_user and ROLEs you can block access to stags, e.g. 'path: ^/category/new , role: ROLE_ADMIN' -> only The Admin can create new Categories. You can check in twig ROLE and show or hide a link "Create a new category" as required.
 - add sorting Tasks using knp paginator bundle -> https://github.com/KnpLabs/KnpPaginatorBundle/tree/2.5.3 
 - add HWIOAuthBundle to support login via FB (and other services)
-- deployed app on AWS: http://ec2-52-29-32-198.eu-central-1.compute.amazonaws.com:8000/landing
+- deployed the app on AWS
 
 ## To improve/ TODO:
 - deploy app on AWS
-- create a simple questionaire (e.g. date of birth day, anniversary)
+- create a simple questionnaire (e.g. date of birth day, anniversary)
 - create predefined tasks based on answers (e.g. create Task to choose a present and seperate to buy it)
 - creation datetime with server's date, not user's date - add UTC or timestamp

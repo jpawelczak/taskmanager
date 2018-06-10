@@ -2,6 +2,8 @@ Task Manager
 ============
 My project during Coderslab bootcamp based on Symfony2, Twig, Doctrine, FOSUserBundle, HWIOAuthBundle, KnpPaginator, Bootstrap, jQuery.
 
+Deplyed the project on AWS.
+
 IDE: PHP Storm.
 
 Note: HWIOAuthBundle doesn't connect to FB, because I would have to register the app at first.
